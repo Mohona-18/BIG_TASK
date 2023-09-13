@@ -23,3 +23,15 @@ resource "aws_instance" "ec2-instance" {
 	  }
 	  
 }
+resource "aws_ebs_volume" "ebs_volume" {
+  count             = "${var.ec2_ebs_volume_count}"
+  availability_zone = "us-east-2c"
+  size              = "8"
+}
+
+resource "aws_volume_attachment" "volume_attachement" {
+  count       = "${var.ec2_ebs_volume_count}"
+  device_name = "${element(var.ec2_device_names, count.index)}"
+  volume_id   = "${aws_ebs_volume.ebs_volume.*.id[count.index]}"
+  instance_id = "${element(aws_instance.ec2-instance.*.id, count.index)}"
+}
