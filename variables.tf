@@ -8,4 +8,9 @@ variable "ec2_device_names" {
     "/dev/sdo",
   ]
 }
-
+variable "instance_type"{
+  default = "t2.micro"
+}
+variable "volume_size"{
+  default = 8
+}
